@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мои бронирования - ОтельБук</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .bookings-container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
+        .bookings-header { margin-bottom: 30px; }
+        .bookings-header h1 { font-size: 32px; color: #1e293b; }
+        .empty-bookings { text-align: center; padding: 80px 20px; background: white; border-radius: 32px; }
+        .empty-bookings i { font-size: 80px; color: #cbd5e1; }
+        .bookings-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 25px; }
+        .booking-card { background: white; border-radius: 24px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.08); transition: 0.2s; }
+        .booking-card:hover { transform: translateY(-3px); }
+        .booking-img { height: 180px; overflow: hidden; }
+        .booking-img img { width: 100%; height: 100%; object-fit: cover; }
+        .booking-info { padding: 20px; }
+        .booking-title { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+        .booking-dates { background: #f8fafc; padding: 10px; border-radius: 12px; margin: 10px 0; font-size: 14px; }
+        .booking-price { font-size: 20px; font-weight: 700; color: #2563eb; margin: 12px 0; }
+        .booking-actions { display: flex; gap: 12px; margin-top: 15px; }
+        .cancel-btn { flex:1; padding:10px; background:#fee2e2; color:#dc2626; border:none; border-radius:40px; cursor:pointer; font-weight:600; }
+        .view-btn { flex:1; padding:10px; background:#2563eb; color:white; border:none; border-radius:40px; cursor:pointer; font-weight:600; }
+        .view-btn:hover { background: #1d4ed8; }
+        .cancel-btn:hover { background: #fecaca; }
+    </style>
+</head>
+<body>
+
+<div class="toolbar">
+    <div class="logo" onclick="window.location.href='index.html'" style="cursor:pointer;">🏠 ОтельБук</div>
+    <div class="toolbar-buttons">
+        <button class="tool-btn" onclick="window.location.href='index.html'"><i class="fas fa-home"></i> Главная</button>
+        <button class="tool-btn" id="helpBtn"><i class="fas fa-question-circle"></i> Справка</button>
+        <button class="tool-btn" onclick="window.location.href='bookings.html'"><i class="fas fa-calendar-check"></i> Бронирования</button>
+    </div>
+    <div class="profile" onclick="window.location.href='profile.html'">
+        <i class="fas fa-user-circle"></i>
+        <span>Профиль</span>
+    </div>
+</div>
+
+<div class="bookings-container">
+    <div class="bookings-header">
+        <h1><i class="fas fa-calendar-check"></i> Мои бронирования</h1>
+        <p>Управляйте своими бронированиями жилья</p>
+    </div>
+    <div id="bookingsList"></div>
+</div>
+
+<footer>
+    <div class="footer-content">
+        <div><h4>ОтельБук</h4><p>Бронирование жилья с 2015 года</p><p class="age-info"><i class="fas fa-users"></i> Аудитория: 18–55 лет</p></div>
+        <div><h4>Контакты</h4><p>support@otelbook.com</p><p>+7 (800) 555-33-22</p></div>
+        <div><h4>Мы в соцсетях</h4><div class="social-icons"><i class="fab fa-telegram"></i><i class="fab fa-vk"></i><i class="fab fa-instagram"></i></div></div>
+    </div>
+</footer>
+
+<script src="data.js"></script>
+<script>
+    function renderBookings() {
+        const bookings = JSON.parse(localStorage.getItem("bookings")) || [];
+        const container = document.getElementById("bookingsList");
+        
+        if (bookings.length === 0) {
+            container.innerHTML = `<div class="empty-bookings"><i class="fas fa-calendar-times"></i><h3>У вас пока нет бронирований</h3><button onclick="window.location.href='index.html'" style="background:#2563eb; color:white; border:none; padding:12px 30px; border-radius:40px; cursor:pointer;">Найти жильё</button></div>`;
+            return;
+        }
+        
+        container.innerHTML = `<div class="bookings-grid">${bookings.map(booking => `
+            <div class="booking-card">
+                <div class="booking-img">
+                    <img src="${booking.img}" alt="${booking.name}" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27400%27 height=%27300%27 viewBox=%270 0 400 300%27%3E%3Crect width=%27400%27 height=%27300%27 fill=%27%232563eb%27/%3E%3Ctext x=%2750%25%27 y=%2750%25%27 text-anchor=%27middle%27 dy=%27.3em%27 fill=%27white%27 font-size=%2724%27%3E🏨%3C/text%3E%3C/svg%3E'">
+                </div>
+                <div class="booking-info">
+                    <div class="booking-title">${booking.name}</div>
+                    <div class="booking-dates">
+                        <i class="fas fa-calendar-check"></i> <strong>Заезд:</strong> ${booking.checkin || "не указан"}<br>
+                        <i class="fas fa-calendar-times"></i> <strong>Выезд:</strong> ${booking.checkout || "не указан"}
+                    </div>
+                    <div class="booking-price">${booking.price.toLocaleString()} ₽ / ночь</div>
+                    <div class="booking-actions">
+                        <button class="view-btn" onclick="viewRoomDetails(${booking.id})"><i class="fas fa-eye"></i> Подробнее</button>
+                        <button class="cancel-btn" onclick="cancelBooking(${booking.id})"><i class="fas fa-trash"></i> Отменить</button>
+                    </div>
+                </div>
+            </div>
+        `).join('')}</div>`;
+    }
+    
+    // Функция для открытия полной карточки отеля
+    function viewRoomDetails(id) {
+        window.location.href = `room.html?id=${id}`;
+    }
+    
+    function cancelBooking(id) {
+        if (confirm("Вы уверены, что хотите отменить бронирование?")) {
+            let bookings = JSON.parse(localStorage.getItem("bookings")) || [];
+            bookings = bookings.filter(b => b.id !== id);
+            localStorage.setItem("bookings", JSON.stringify(bookings));
+            renderBookings();
+            alert("❌ Бронирование отменено");
+        }
+    }
+    
+    function openHelp() {
+        const modal = document.createElement("div");
+        modal.style.cssText = `position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000; display:flex; align-items:center; justify-content:center;`;
+        modal.innerHTML = `<div style="background:white; border-radius:28px; max-width:400px; width:90%; padding:25px;"><h2><i class="fas fa-life-ring"></i> Справка</h2><p>Здесь отображаются все ваши бронирования. Нажмите "Подробнее" для просмотра информации об отеле.</p><button onclick="this.closest('div').parentElement.remove()" style="background:#2563eb; color:white; border:none; padding:12px; border-radius:40px; width:100%;">Закрыть</button></div>`;
+        document.body.appendChild(modal);
+    }
+    
+    document.getElementById("helpBtn")?.addEventListener("click", openHelp);
+    document.addEventListener("DOMContentLoaded", renderBookings);
+    
+    // Аватарка в шапке
+    function loadAvatarToHeader() {
+        const savedAvatar = localStorage.getItem("userAvatar");
+        const profileDiv = document.querySelector(".profile");
+        if (!profileDiv) return;
+        const onclickAttr = profileDiv.getAttribute("onclick");
+        profileDiv.innerHTML = '';
+        if (savedAvatar && savedAvatar.startsWith('data:image')) {
+            const img = document.createElement("img");
+            img.src = savedAvatar;
+            img.style.cssText = "width:24px; height:24px; border-radius:50%; object-fit:cover;";
+            profileDiv.appendChild(img);
+        } else {
+            const icon = document.createElement("i");
+            icon.className = "fas fa-user-circle";
+            icon.style.cssText = "font-size:24px; color:#2563eb;";
+            profileDiv.appendChild(icon);
+        }
+        const span = document.createElement("span");
+        span.innerText = "Профиль";
+        profileDiv.appendChild(span);
+        if (onclickAttr) profileDiv.setAttribute("onclick", onclickAttr);
+        else profileDiv.onclick = () => window.location.href = 'profile.html';
+    }
+    document.addEventListener("DOMContentLoaded", loadAvatarToHeader);
+    window.updateAvatarGlobally = loadAvatarToHeader;
+</script>
+
+</body>
+</html>

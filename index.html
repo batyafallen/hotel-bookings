@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ОтельБук - бронирование жилья</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+
+<!-- ПАНЕЛЬ ИНСТРУМЕНТОВ -->
+<div class="toolbar">
+    <div class="logo" onclick="window.location.href='index.html'" style="cursor:pointer;">🏠 ОтельБук</div>
+    <div class="toolbar-buttons">
+        <button class="tool-btn" onclick="window.location.href='index.html'"><i class="fas fa-home"></i> Главная</button>
+        <button class="tool-btn" id="helpBtn"><i class="fas fa-question-circle"></i> Справка</button>
+        <button class="tool-btn" onclick="window.location.href='bookings.html'"><i class="fas fa-calendar-check"></i> Бронирования</button>
+    </div>
+    <div class="profile" onclick="window.location.href='profile.html'">
+        <i class="fas fa-user-circle"></i>
+        <span>Профиль</span>
+    </div>
+</div>
+
+<!-- ГЛАВНЫЙ БЛОК ПОИСКА -->
+<div class="hero">
+    <h1>Найдём идеальное жильё <span class="highlight">для вашего путешествия</span></h1>
+    <p>Более 10 000 отелей, апартаментов и вилл по всему миру</p>
+    
+    <div class="search-box">
+        <i class="fas fa-search"></i>
+        <input type="text" id="searchInput" placeholder="Куда поедем? Город, отель, район...">
+        <button id="searchBtn">Найти</button>
+    </div>
+
+    <!-- ФИЛЬТРЫ -->
+    <div class="filters">
+        <div class="filter-group">
+            <label>Тип жилья</label>
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-type="all">Все</button>
+                <button class="filter-btn" data-type="hotel">🏨 Отель</button>
+                <button class="filter-btn" data-type="apartment">🏢 Апартаменты</button>
+                <button class="filter-btn" data-type="hostel">🛌 Хостел</button>
+                <button class="filter-btn" data-type="villa">🏡 Вилла</button>
+            </div>
+        </div>
+        
+        <div class="filter-group">
+            <label>💰 Цена за ночь: до <span id="priceValue">15000</span> ₽</label>
+            <input type="range" id="priceRange" min="0" max="30000" step="500" value="15000">
+        </div>
+
+        <div class="filter-group">
+            <label>⭐ Рейтинг</label>
+            <div class="rating-buttons">
+                <button class="rating-btn active" data-rating="0">Любой</button>
+                <button class="rating-btn" data-rating="4">4+ ★</button>
+                <button class="rating-btn" data-rating="4.5">4.5+ ★</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- РЕЗУЛЬТАТЫ -->
+<div class="results">
+    <div class="results-header">
+        <h2><i class="fas fa-building"></i> Жильё для вас</h2>
+        <select id="sortSelect">
+            <option value="price-asc">По возрастанию цены</option>
+            <option value="price-desc">По убыванию цены</option>
+            <option value="rating">По рейтингу</option>
+        </select>
+    </div>
+    <div class="cards-grid" id="cardsContainer"></div>
+</div>
+
+<!-- ПОДВАЛ -->
+<footer>
+    <div class="footer-content">
+        <div>
+            <h4>ОтельБук</h4>
+            <p>Бронирование жилья с 2015 года</p>
+            <p class="age-info"><i class="fas fa-users"></i> Аудитория: 18–55 лет | Основная: 25–40 лет</p>
+        </div>
+        <div>
+            <h4>Контакты</h4>
+            <p>support@otelbook.com</p>
+            <p>+7 (800) 555-33-22</p>
+        </div>
+        <div>
+            <h4>Мы в соцсетях</h4>
+            <div class="social-icons">
+                <i class="fab fa-telegram"></i>
+                <i class="fab fa-vk"></i>
+                <i class="fab fa-instagram"></i>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script src="data.js"></script>
+<script src="script.js"></script>
+<script src="help.js"></script>
+<script>
+    // ========== УПРАВЛЕНИЕ АВАТАРКОЙ ==========
+    function loadAvatarToHeader() {
+        const savedAvatar = localStorage.getItem("userAvatar");
+        const profileDiv = document.querySelector(".profile");
+        
+        if (!profileDiv) return;
+        
+        const currentOnclick = profileDiv.getAttribute("onclick");
+        profileDiv.innerHTML = '';
+        
+        if (savedAvatar && savedAvatar.startsWith('data:image')) {
+            const img = document.createElement("img");
+            img.src = savedAvatar;
+            img.style.width = "24px";
+            img.style.height = "24px";
+            img.style.borderRadius = "50%";
+            img.style.objectFit = "cover";
+            profileDiv.appendChild(img);
+        } else {
+            const icon = document.createElement("i");
+            icon.className = "fas fa-user-circle";
+            icon.style.fontSize = "24px";
+            icon.style.color = "#2563eb";
+            profileDiv.appendChild(icon);
+        }
+        
+        const span = document.createElement("span");
+        span.innerText = "Профиль";
+        profileDiv.appendChild(span);
+        
+        if (currentOnclick) {
+            profileDiv.setAttribute("onclick", currentOnclick);
+        } else {
+            profileDiv.onclick = () => window.location.href = 'profile.html';
+        }
+    }
+    
+    document.addEventListener("DOMContentLoaded", loadAvatarToHeader);
+    window.updateAvatarGlobally = loadAvatarToHeader;
+    
+    // Плавающая кнопка справки
+    document.addEventListener("DOMContentLoaded", function() {
+        const helpFab = document.getElementById("helpFab");
+        const helpCenter = document.getElementById("helpCenter");
+        const helpClose = document.getElementById("helpClose");
+
+        if (helpFab) {
+            helpFab.addEventListener("click", () => {
+                helpCenter.classList.toggle("active");
+            });
+        }
+
+        if (helpClose) {
+            helpClose.addEventListener("click", () => {
+                helpCenter.classList.remove("active");
+            });
+        }
+
+        const helpTabs = document.querySelectorAll(".help-tab");
+        const helpPanes = document.querySelectorAll(".help-pane");
+
+        helpTabs.forEach(tab => {
+            tab.addEventListener("click", () => {
+                const tabId = tab.getAttribute("data-tab");
+                helpTabs.forEach(t => t.classList.remove("active"));
+                tab.classList.add("active");
+                helpPanes.forEach(pane => pane.classList.remove("active"));
+                document.getElementById(tabId).classList.add("active");
+            });
+        });
+
+        document.addEventListener("click", (e) => {
+            if (helpCenter && helpFab) {
+                if (!helpCenter.contains(e.target) && !helpFab.contains(e.target) && helpCenter.classList.contains("active")) {
+                    helpCenter.classList.remove("active");
+                }
+            }
+        });
+    });
+</script>
+
+<!-- ПЛАВАЮЩАЯ КНОПКА СПРАВКИ -->
+<div class="help-fab" id="helpFab">
+    <i class="fas fa-question"></i>
+</div>
+
+<!-- СПРАВОЧНЫЙ ЦЕНТР -->
+<div class="help-center" id="helpCenter">
+    <div class="help-header">
+        <h3><i class="fas fa-life-ring"></i> Справочный центр</h3>
+        <button class="help-close" id="helpClose">&times;</button>
+    </div>
+    <div class="help-tabs">
+        <button class="help-tab active" data-tab="videos">🎥 Видео</button>
+        <button class="help-tab" data-tab="faq">❓ FAQ</button>
+        <button class="help-tab" data-tab="age">👥 О нас</button>
+    </div>
+    <div class="help-content">
+        <div class="help-pane active" id="videos">
+            <div class="video-item">
+                <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Как забронировать отель" frameborder="0" allowfullscreen></iframe>
+                <div class="video-title">📹 Как забронировать отель на ОтельБук</div>
+            </div>
+            <div class="video-item">
+                <iframe src="https://www.youtube.com/embed/SnJz7l7CkxE" title="Поиск и фильтры" frameborder="0" allowfullscreen></iframe>
+                <div class="video-title">🔍 Как пользоваться поиском и фильтрами</div>
+            </div>
+            <div class="video-item">
+                <iframe src="https://www.youtube.com/embed/9bZkp7q19f0" title="Управление бронированиями" frameborder="0" allowfullscreen></iframe>
+                <div class="video-title">📋 Как управлять бронированиями</div>
+            </div>
+        </div>
+        
+        <div class="help-pane" id="faq">
+            <div class="faq-item">
+                <div class="faq-question" onclick="this.nextElementSibling.classList.toggle('show')">
+                    <span>❓ Как забронировать жильё?</span>
+                    <span>▼</span>
+                </div>
+                <div class="faq-answer">Нажмите на карточку отеля, затем кнопку "Забронировать сейчас".</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="this.nextElementSibling.classList.toggle('show')">
+                    <span>❓ Как отменить бронирование?</span>
+                    <span>▼</span>
+                </div>
+                <div class="faq-answer">Перейдите в "Бронирования" → нажмите "Отменить" у нужного отеля.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="this.nextElementSibling.classList.toggle('show')">
+                    <span>❓ Как изменить данные профиля?</span>
+                    <span>▼</span>
+                </div>
+                <div class="faq-answer">Перейдите в "Профиль" → измените поля → нажмите "Сохранить".</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="this.nextElementSibling.classList.toggle('show')">
+                    <span>❓ Как пользоваться фильтрами?</span>
+                    <span>▼</span>
+                </div>
+                <div class="faq-answer">Выберите тип жилья, цену и рейтинг — результаты обновятся автоматически.</div>
+            </div>
+        </div>
+        
+        <div class="help-pane" id="age">
+            <div class="age-card">
+                <h4><i class="fas fa-users"></i> Наша аудитория</h4>
+                <p><strong>18–55 лет</strong> — основная целевая группа</p>
+                <p><strong>25–40 лет</strong> — ядро аудитории (работающие путешественники)</p>
+                <p><strong>40+ лет</strong> — ценят понятную навигацию и справку</p>
+            </div>
+            <div class="age-card">
+                <h4><i class="fas fa-star"></i> Почему выбирают нас</h4>
+                <p>✓ Более 10 000 объектов</p>
+                <p>✓ Лучшие цены</p>
+                <p>✓ Поддержка 24/7</p>
+                <p>✓ Бесплатная отмена брони</p>
+            </div>
+            <div class="age-card">
+                <h4><i class="fas fa-envelope"></i> Контакты</h4>
+                <p>Email: support@otelbook.com</p>
+                <p>Телефон: +7 (800) 555-33-22</p>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- МОДАЛЬНОЕ ОКНО ДЛЯ ВЫБОРА ДАТ -->
+<div id="dateModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:2000; align-items:center; justify-content:center;">
+    <div style="background:white; border-radius:28px; max-width:400px; width:90%; padding:25px;">
+        <h3 style="margin-bottom:20px;">📅 Выберите даты</h3>
+        <div style="margin-bottom:15px;">
+            <label>Дата заезда:</label>
+            <input type="date" id="modalCheckin" style="width:100%; padding:12px; margin-top:8px; border:1px solid #e2e8f0; border-radius:16px;">
+        </div>
+        <div style="margin-bottom:20px;">
+            <label>Дата выезда:</label>
+            <input type="date" id="modalCheckout" style="width:100%; padding:12px; margin-top:8px; border:1px solid #e2e8f0; border-radius:16px;">
+        </div>
+        <div style="display:flex; gap:12px;">
+            <button id="confirmBooking" style="flex:1; background:#2563eb; color:white; border:none; padding:12px; border-radius:40px; font-weight:600; cursor:pointer;">✅ Подтвердить</button>
+            <button id="cancelBookingModal" style="flex:1; background:#f1f5f9; border:none; padding:12px; border-radius:40px; font-weight:600; cursor:pointer;">❌ Отмена</button>
+        </div>
+    </div>
+</div>
+</body>
+</html>
