@@ -6,18 +6,20 @@
 
 body {
     font-family: 'Inter', sans-serif;
-    background: #f8fafc;
-    color: #1e293b;
+    background: #ecf5ef;
+    color: #1a3a2a;
 }
 
+
 /* ========== ПАНЕЛЬ ИНСТРУМЕНТОВ ========== */
+
 .toolbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 15px 40px;
-    background: white;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    background: #0d3b2a;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
     position: sticky;
     top: 0;
     z-index: 100;
@@ -26,7 +28,7 @@ body {
 .logo {
     font-size: 24px;
     font-weight: 700;
-    background: linear-gradient(135deg, #2563eb, #1e40af);
+    background: linear-gradient(135deg, #f5d96b, #e8c84a);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -47,7 +49,7 @@ body {
     font-weight: 500;
     cursor: pointer;
     transition: 0.2s;
-    color: #475569;
+    color: #d4ecdf;
 }
 
 .tool-btn i {
@@ -55,8 +57,8 @@ body {
 }
 
 .tool-btn:hover {
-    background: #f1f5f9;
-    color: #2563eb;
+    background: rgba(245, 217, 107, 0.2);
+    color: #f5d96b;
 }
 
 .profile {
@@ -67,15 +69,16 @@ body {
     padding: 8px 16px;
     border-radius: 30px;
     transition: 0.2s;
+    color: #d4ecdf;
 }
 
 .profile:hover {
-    background: #f1f5f9;
+    background: rgba(245, 217, 107, 0.2);
 }
 
 .profile i {
     font-size: 24px;
-    color: #2563eb;
+    color: #f5d96b;
 }
 
 .profile img {
@@ -85,9 +88,11 @@ body {
     object-fit: cover;
 }
 
+
 /* ========== ГЛАВНЫЙ БЛОК ========== */
+
 .hero {
-    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    background: linear-gradient(135deg, #0d3b2a 0%, #1a6b4a 100%);
     color: white;
     padding: 50px 40px 60px;
     text-align: center;
@@ -99,7 +104,7 @@ body {
 }
 
 .hero h1 .highlight {
-    color: #60a5fa;
+    color: #f5d96b;
 }
 
 .hero p {
@@ -119,7 +124,7 @@ body {
 }
 
 .search-box i {
-    color: #94a3b8;
+    color: #0d3b2a;
     font-size: 20px;
 }
 
@@ -132,8 +137,8 @@ body {
 }
 
 .search-box button {
-    background: #2563eb;
-    color: white;
+    background: #0d3b2a;
+    color: #f5d96b;
     border: none;
     padding: 12px 35px;
     border-radius: 50px;
@@ -143,12 +148,15 @@ body {
 }
 
 .search-box button:hover {
-    background: #1d4ed8;
+    background: #f5d96b;
+    color: #0d3b2a;
 }
 
+
 /* ========== ФИЛЬТРЫ ========== */
+
 .filters {
-    background: rgba(255,255,255,0.1);
+    background: rgba(13, 59, 42, 0.85);
     backdrop-filter: blur(10px);
     border-radius: 24px;
     padding: 25px;
@@ -166,17 +174,20 @@ body {
     font-size: 14px;
     font-weight: 500;
     margin-bottom: 12px;
+    color: #f5d96b;
 }
 
-.filter-buttons, .rating-buttons {
+.filter-buttons,
+.rating-buttons {
     display: flex;
     flex-wrap: wrap;
     gap: 12px;
 }
 
-.filter-btn, .rating-btn {
-    background: rgba(255,255,255,0.2);
-    border: 1px solid rgba(255,255,255,0.3);
+.filter-btn,
+.rating-btn {
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.25);
     padding: 8px 22px;
     border-radius: 40px;
     color: white;
@@ -185,9 +196,11 @@ body {
     font-size: 14px;
 }
 
-.filter-btn.active, .rating-btn.active {
-    background: #2563eb;
-    border-color: #2563eb;
+.filter-btn.active,
+.rating-btn.active {
+    background: #f5d96b;
+    border-color: #f5d96b;
+    color: #0d3b2a;
 }
 
 .filter-group input[type="range"] {
@@ -195,9 +208,24 @@ body {
     height: 6px;
     border-radius: 10px;
     margin-top: 10px;
+    background: #d4ecdf;
+    -webkit-appearance: none;
+    appearance: none;
 }
 
+.filter-group input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #f5d96b;
+    cursor: pointer;
+    border: 2px solid #0d3b2a;
+}
+
+
 /* ========== КАРТОЧКИ ========== */
+
 .results {
     max-width: 1300px;
     margin: 0 auto;
@@ -215,13 +243,13 @@ body {
 
 .results-header h2 {
     font-size: 28px;
-    color: #0f172a;
+    color: #0d3b2a;
 }
 
 .results-header select {
     padding: 10px 20px;
     border-radius: 30px;
-    border: 1px solid #e2e8f0;
+    border: 1px solid #b8d5c4;
     background: white;
     font-size: 14px;
 }
@@ -236,14 +264,14 @@ body {
     background: white;
     border-radius: 24px;
     overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
     transition: 0.3s;
     cursor: pointer;
 }
 
 .card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 15px 30px rgba(0,0,0,0.12);
+    box-shadow: 0 15px 30px rgba(13, 59, 42, 0.15);
 }
 
 .card-img {
@@ -252,7 +280,7 @@ body {
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    background: linear-gradient(135deg, #e2e8f0, #f1f5f9);
+    background: linear-gradient(135deg, #c8e0d4, #b0d0be);
 }
 
 .card-img img {
@@ -260,7 +288,6 @@ body {
     height: 100%;
     object-fit: cover;
     transition: transform 0.3s ease;
-     background: red;
 }
 
 .card:hover .card-img img {
@@ -275,6 +302,7 @@ body {
     font-size: 20px;
     font-weight: 700;
     margin-bottom: 8px;
+    color: #0d3b2a;
 }
 
 .card-rating {
@@ -285,19 +313,19 @@ body {
 }
 
 .stars {
-    color: #fbbf24;
+    color: #f5d96b;
     letter-spacing: 2px;
 }
 
 .card-price {
     font-size: 22px;
     font-weight: 700;
-    color: #2563eb;
+    color: #0d3b2a;
     margin: 12px 0;
 }
 
 .card-location {
-    color: #64748b;
+    color: #5a8c72;
     font-size: 14px;
     display: flex;
     align-items: center;
@@ -308,23 +336,26 @@ body {
     margin-top: 15px;
     width: 100%;
     padding: 12px;
-    background: #f1f5f9;
+    background: #ecf5ef;
     border: none;
     border-radius: 40px;
     font-weight: 600;
     cursor: pointer;
     transition: 0.2s;
+    color: #0d3b2a;
 }
 
 .book-btn:hover {
-    background: #2563eb;
-    color: white;
+    background: #f5d96b;
+    color: #0d3b2a;
 }
 
+
 /* ========== ПОДВАЛ ========== */
+
 footer {
-    background: #0f172a;
-    color: #94a3b8;
+    background: #0a2b1f;
+    color: #b8d5c4;
     padding: 40px;
     margin-top: 40px;
 }
@@ -338,13 +369,13 @@ footer {
 }
 
 footer h4 {
-    color: white;
+    color: #f5d96b;
     margin-bottom: 15px;
 }
 
 .age-info {
     margin-top: 12px;
-    color: #60a5fa;
+    color: #f5d96b;
     font-size: 13px;
 }
 
@@ -353,9 +384,16 @@ footer h4 {
     gap: 18px;
     font-size: 24px;
     cursor: pointer;
+    color: #b8d5c4;
 }
 
+.social-icons i:hover {
+    color: #f5d96b;
+}
+
+
 /* ========== АДАПТИВ ========== */
+
 @media (max-width: 768px) {
     .toolbar {
         padding: 12px 20px;
@@ -383,35 +421,39 @@ footer h4 {
     }
 }
 
+
 /* ========== ПЛАВАЮЩАЯ КНОПКА СПРАВКИ ========== */
+
 .help-fab {
     position: fixed;
     bottom: 30px;
     right: 30px;
     width: 60px;
     height: 60px;
-    background: linear-gradient(135deg, #2563eb, #1e40af);
+    background: linear-gradient(135deg, #0d3b2a, #1a6b4a);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    box-shadow: 0 4px 15px rgba(37,99,235,0.4);
+    box-shadow: 0 4px 15px rgba(13, 59, 42, 0.4);
     transition: all 0.3s ease;
     z-index: 999;
 }
 
 .help-fab:hover {
     transform: scale(1.1);
-    box-shadow: 0 6px 20px rgba(37,99,235,0.5);
+    box-shadow: 0 6px 20px rgba(245, 217, 107, 0.3);
 }
 
 .help-fab i {
     font-size: 28px;
-    color: white;
+    color: #f5d96b;
 }
 
+
 /* ========== СПРАВОЧНЫЙ ЦЕНТР ========== */
+
 .help-center {
     position: fixed;
     bottom: 100px;
@@ -420,7 +462,7 @@ footer h4 {
     max-width: calc(100vw - 40px);
     background: white;
     border-radius: 24px;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
     z-index: 1000;
     overflow: hidden;
     animation: slideIn 0.3s ease;
@@ -443,7 +485,7 @@ footer h4 {
 }
 
 .help-header {
-    background: linear-gradient(135deg, #1e293b, #0f172a);
+    background: linear-gradient(135deg, #0d3b2a, #0a2b1f);
     color: white;
     padding: 20px;
     display: flex;
@@ -457,9 +499,9 @@ footer h4 {
 }
 
 .help-close {
-    background: rgba(255,255,255,0.2);
+    background: rgba(255, 255, 255, 0.2);
     border: none;
-    color: white;
+    color: #f5d96b;
     width: 32px;
     height: 32px;
     border-radius: 50%;
@@ -482,13 +524,13 @@ footer h4 {
     cursor: pointer;
     font-size: 14px;
     font-weight: 500;
-    color: #64748b;
+    color: #5a8c72;
     transition: 0.2s;
 }
 
 .help-tab.active {
-    color: #2563eb;
-    border-bottom: 2px solid #2563eb;
+    color: #f5d96b;
+    border-bottom: 2px solid #f5d96b;
 }
 
 .help-content {
@@ -509,7 +551,7 @@ footer h4 {
     margin-bottom: 20px;
     border-radius: 16px;
     overflow: hidden;
-    background: #f1f5f9;
+    background: #ecf5ef;
 }
 
 .video-item iframe {
@@ -522,12 +564,13 @@ footer h4 {
     font-size: 14px;
     font-weight: 500;
     background: white;
+    color: #0d3b2a;
 }
 
 .faq-item {
     margin-bottom: 16px;
     padding: 12px;
-    background: #f8fafc;
+    background: #ecf5ef;
     border-radius: 12px;
 }
 
@@ -536,12 +579,13 @@ footer h4 {
     cursor: pointer;
     display: flex;
     justify-content: space-between;
+    color: #0d3b2a;
 }
 
 .faq-answer {
     display: none;
     margin-top: 8px;
-    color: #475569;
+    color: #5a8c72;
     font-size: 14px;
 }
 
@@ -550,13 +594,13 @@ footer h4 {
 }
 
 .age-card {
-    background: linear-gradient(135deg, #2563eb10, #1e40af10);
+    background: linear-gradient(135deg, #0d3b2a10, #1a6b4a10);
     padding: 16px;
     border-radius: 16px;
     margin-bottom: 15px;
 }
 
 .age-card h4 {
-    color: #2563eb;
+    color: #f5d96b;
     margin-bottom: 10px;
 }
